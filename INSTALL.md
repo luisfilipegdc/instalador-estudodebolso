@@ -15,7 +15,7 @@ Este documento descreve como instalar, atualizar e monitorar a plataforma **Estu
 
 1. Baixe o script de instalação (ou clone este repositório):
    ```bash
-   wget https://raw.githubusercontent.com/seu-usuario/estudonobolso/main/install.sh
+   wget https://raw.githubusercontent.com/luisfilipegdc/instalador-estudodebolso/main/install.sh
    chmod +x install.sh
    ```
 
@@ -28,6 +28,7 @@ Este documento descreve como instalar, atualizar e monitorar a plataforma **Estu
    - Domínio do site (ex: `estudonobolso.com.br`)
    - Email do administrador
    - Credenciais desejadas para o Banco de Dados
+   - **Repositório:** O script já vem configurado para o repositório oficial (`luisfilipegdc/estudodebolso`). Se for privado, tenha em mãos seu usuário do GitHub e um **Personal Access Token (PAT)**.
 
 ### O que o instalador faz?
 - Instala Apache, MySQL, PHP 8.2 e extensões necessárias.

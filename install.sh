@@ -131,8 +131,27 @@ collect_data() {
     read -p "8. Diretório de instalação [/var/www/$DOMAIN]: " INSTALL_DIR
     INSTALL_DIR=${INSTALL_DIR:-/var/www/$DOMAIN}
 
-    read -p "9. Repositório GitHub [https://github.com/seu-usuario/estudonobolso.git]: " REPO_URL
-    REPO_URL=${REPO_URL:-https://github.com/seu-usuario/estudonobolso.git}
+    DEFAULT_REPO="https://github.com/luisfilipegdc/estudodebolso.git"
+    read -p "9. Repositório GitHub [$DEFAULT_REPO]: " REPO_URL
+    REPO_URL=${REPO_URL:-$DEFAULT_REPO}
+    
+    # Suporte a repositório privado
+    echo ""
+    log_info "Configuração de Repositório Privado"
+    read -p "Este repositório é privado? (s/n) [n]: " IS_PRIVATE
+    IS_PRIVATE=${IS_PRIVATE:-n}
+    
+    if [[ "$IS_PRIVATE" == "s" || "$IS_PRIVATE" == "S" ]]; then
+        log_warn "Para repositórios privados, recomendamos usar um Personal Access Token (PAT)."
+        read -p "Usuário do GitHub: " GH_USER
+        read -s -p "Token de Acesso (PAT): " GH_TOKEN
+        echo ""
+        
+        # Inserir credenciais na URL
+        if [[ "$REPO_URL" == https://* ]]; then
+            REPO_URL="${REPO_URL/https:\/\//https:\/\/$GH_USER:$GH_TOKEN@}"
+        fi
+    fi
 
     echo ""
     log_info "Resumo da Instalação:"
@@ -193,7 +212,15 @@ setup_files() {
         mv "$INSTALL_DIR" "$BACKUP_NAME"
     fi
 
+    # Configurar armazenamento de credenciais temporário para evitar pedir senha novamente
+    git config --global credential.helper store
+
     git clone "$REPO_URL" "$INSTALL_DIR"
+    
+    # Limpar credenciais da URL remota para não ficarem expostas no .git/config (se usou token na URL)
+    # Mas se usou token na URL, ele já fica salvo no remote origin. 
+    # Melhor deixar como está para que o update.sh funcione sem pedir senha.
+    
     cd "$INSTALL_DIR" || exit 1
 }
 
