@@ -8,8 +8,8 @@ Este repositório contém scripts automatizados para instalar e manter o sistema
 2. Suba estes arquivos para lá.
 3. Na sua VPS, clone este repositório de setup:
    ```bash
-   git clone https://github.com/seu-usuario/estudodebolso-vps-setup.git
-   cd estudodebolso-vps-setup
+   git clone https://github.com/luisfilipegdc/instalador-estudodebolso.git
+   cd instalador-estudodebolso
    ```
 4. Dê permissão de execução aos scripts:
    ```bash
