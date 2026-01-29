@@ -33,11 +33,16 @@ fi
 echo -e "${BLUE}Configurando repositório do sistema...${NC}"
 # Limpa token se estiver vazio
 GITHUB_TOKEN=""
-printf "Cole seu Personal Access Token do GitHub (ghp_...): "
+echo -n "Cole seu Personal Access Token do GitHub (ghp_...): "
 read -r GITHUB_TOKEN
 
-# Remove espaços em branco, quebras de linha e caracteres especiais invisíveis
-GITHUB_TOKEN=$(echo "$GITHUB_TOKEN" | tr -d '\r\n' | xargs)
+# Limpeza básica do token
+GITHUB_TOKEN=$(echo "$GITHUB_TOKEN" | tr -d '\r\n ' | xargs)
+
+if [ -z "$GITHUB_TOKEN" ]; then
+    echo -e "${RED}Erro: Token não pode ser vazio.${NC}"
+    exit 1
+fi
 
 echo -e "${BLUE}Tentando clonar o repositório...${NC}"
 REPO_URL="https://x-token-auth:${GITHUB_TOKEN}@github.com/luisfilipegdc/estudodebolso.git"
