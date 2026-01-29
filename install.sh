@@ -31,14 +31,12 @@ fi
 
 # 4. Configuração do Repositório do Sistema
 echo -e "${BLUE}Configurando repositório do sistema...${NC}"
-# Limpa token se estiver vazio ou inválido
+# Limpa token se estiver vazio
 GITHUB_TOKEN=""
-while [[ ! $GITHUB_TOKEN =~ ^ghp_ ]]; do
-    read -p "Cole seu Personal Access Token do GitHub (ghp_...): " GITHUB_TOKEN
-    if [[ ! $GITHUB_TOKEN =~ ^ghp_ ]]; then
-        echo -e "${RED}Token inválido! O token deve começar com 'ghp_'.${NC}"
-    fi
-done
+read -p "Cole seu Personal Access Token do GitHub (ghp_...): " GITHUB_TOKEN
+
+# Remove espaços em branco acidentais
+GITHUB_TOKEN=$(echo $GITHUB_TOKEN | xargs)
 
 REPO_URL="https://x-token-auth:${GITHUB_TOKEN}@github.com/luisfilipegdc/estudodebolso.git"
 PROJECT_DIR="estudodebolso"
