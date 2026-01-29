@@ -23,9 +23,12 @@ fi
 cd $PROJECT_DIR
 
 echo -e "${BLUE}Puxando últimas alterações do Git...${NC}"
-GITHUB_TOKEN="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"
-# Garante que o remote use o token para não pedir senha
-git remote set-url origin "https://${GITHUB_TOKEN}@github.com/luisfilipegdc/estudodebolso.git"
+# Verifica se o remote já tem o token, se não, solicita
+CURRENT_REMOTE=$(git remote get-url origin)
+if [[ $CURRENT_REMOTE != *"ghp_"* ]]; then
+    read -p "Cole seu Personal Access Token do GitHub para atualizar: " GITHUB_TOKEN
+    git remote set-url origin "https://${GITHUB_TOKEN}@github.com/luisfilipegdc/estudodebolso.git"
+fi
 git pull
 
 echo -e "${BLUE}Reconstruindo e reiniciando containers...${NC}"

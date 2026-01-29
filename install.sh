@@ -30,7 +30,9 @@ fi
 
 # 4. Configuração do Repositório do Sistema
 echo -e "${BLUE}Configurando repositório do sistema...${NC}"
-GITHUB_TOKEN="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"
+if [ -z "$GITHUB_TOKEN" ]; then
+    read -p "Cole seu Personal Access Token do GitHub (ghp_...): " GITHUB_TOKEN
+fi
 REPO_URL="https://${GITHUB_TOKEN}@github.com/luisfilipegdc/estudodebolso.git"
 PROJECT_DIR="estudodebolso"
 
