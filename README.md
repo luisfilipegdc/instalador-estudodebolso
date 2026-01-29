@@ -22,3 +22,5 @@ Basta rodar o script de update que estará na pasta `vps-setup`:
 
 
 
+git clone https://github.com/luisfilipegdc/instalador-estudodebolso.git
+cd estudodebolso-vps-setup

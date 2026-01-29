@@ -51,17 +51,22 @@ if [ ! -f ".env" ]; then
     cp .env.example .env 2>/dev/null || touch .env
     
     read -p "NEXTAUTH_SECRET (gere um aleatório): " NEXT_SECRET
-    read -p "NEXTAUTH_URL (ex: http://seu-ip:3000): " NEXT_URL
     read -p "OPENAI_API_KEY: " OPENAI_KEY
     
     echo "DATABASE_URL=postgresql://postgres:postgres@db:5432/estudodebolso" >> .env
     echo "NEXTAUTH_SECRET=$NEXT_SECRET" >> .env
-    echo "NEXTAUTH_URL=$NEXT_URL" >> .env
+    echo "NEXTAUTH_URL=https://estudodebolso.com.br" >> .env
     echo "OPENAI_API_KEY=$OPENAI_KEY" >> .env
 fi
 
-# 6. Rodar o sistema
-echo -e "${GREEN}Iniciando o sistema com Docker Compose...${NC}"
+# 6. SSL Automático (Certbot)
+echo -e "${BLUE}Configurando SSL para estudodebolso.com.br...${NC}"
+docker compose up -d nginx
+docker compose run --rm certbot certonly --webroot --webroot-path=/var/www/certbot -d estudodebolso.com.br --email seu-email@gmail.com --agree-tos --no-eff-email
+docker compose restart nginx
+
+# 7. Rodar o sistema
+echo -e "${GREEN}Iniciando o sistema completo...${NC}"
 docker compose up -d --build
 
 echo -e "${GREEN}=== Instalação Concluída! ===${NC}"
