@@ -67,15 +67,22 @@ if [ ! -f ".env" ]; then
     echo -e "${BLUE}Configurando variáveis de ambiente (.env)...${NC}"
     cp .env.example .env 2>/dev/null || touch .env
     
-    echo -n "NEXTAUTH_SECRET (gere um aleatório): "
-    read -r NEXT_SECRET < /dev/tty
+    # Gera um segredo aleatório se o usuário não fornecer
+    if [ -z "$NEXT_SECRET" ]; then
+        NEXT_SECRET=$(openssl rand -base64 32)
+        echo "Gerado segredo automático: $NEXT_SECRET"
+    fi
     
     echo -n "OPENAI_API_KEY: "
     read -r OPENAI_KEY < /dev/tty
     
     echo "DATABASE_URL=postgresql://postgres:postgres@db:5432/estudodebolso" >> .env
+    echo "DIRECT_URL=postgresql://postgres:postgres@db:5432/estudodebolso" >> .env
+    echo "AUTH_SECRET=$NEXT_SECRET" >> .env
     echo "NEXTAUTH_SECRET=$NEXT_SECRET" >> .env
+    echo "AUTH_URL=https://estudodebolso.com.br" >> .env
     echo "NEXTAUTH_URL=https://estudodebolso.com.br" >> .env
+    echo "AUTH_TRUST_HOST=true" >> .env
     echo "OPENAI_API_KEY=$OPENAI_KEY" >> .env
 fi
 
@@ -88,6 +95,12 @@ docker compose restart nginx
 # 7. Rodar o sistema
 echo -e "${GREEN}Iniciando o sistema completo...${NC}"
 docker compose up -d --build
+
+# 8. Migrações do Banco de Dados
+echo -e "${BLUE}Executando migrações do banco de dados...${NC}"
+# Esperar o banco estar pronto
+sleep 5
+docker compose exec -T app npx prisma migrate deploy
 
 echo -e "${GREEN}=== Instalação Concluída! ===${NC}"
 echo -e "Acesse seu sistema em: https://estudodebolso.com.br"
