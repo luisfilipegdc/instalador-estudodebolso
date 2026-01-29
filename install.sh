@@ -33,11 +33,13 @@ fi
 echo -e "${BLUE}Configurando repositório do sistema...${NC}"
 # Limpa token se estiver vazio
 GITHUB_TOKEN=""
-read -p "Cole seu Personal Access Token do GitHub (ghp_...): " GITHUB_TOKEN
+printf "Cole seu Personal Access Token do GitHub (ghp_...): "
+read -r GITHUB_TOKEN
 
-# Remove espaços em branco acidentais
-GITHUB_TOKEN=$(echo $GITHUB_TOKEN | xargs)
+# Remove espaços em branco, quebras de linha e caracteres especiais invisíveis
+GITHUB_TOKEN=$(echo "$GITHUB_TOKEN" | tr -d '\r\n' | xargs)
 
+echo -e "${BLUE}Tentando clonar o repositório...${NC}"
 REPO_URL="https://x-token-auth:${GITHUB_TOKEN}@github.com/luisfilipegdc/estudodebolso.git"
 PROJECT_DIR="estudodebolso"
 
