@@ -2,25 +2,39 @@
 
 Este repositório contém scripts automatizados para instalar e manter o sistema **Estudo de Bolso** em uma VPS Linux (Ubuntu/Debian).
 
-## 🚀 Como usar
+## Como usar
 
-### 1. Na sua VPS virgem, rode:
+1. Crie um novo repositório privado no GitHub chamado `estudodebolso-vps-setup`.
+2. Suba estes arquivos para lá.
+3. Na sua VPS, clone este repositório de setup:
+   ```bash
+   git clone https://github.com/luisfilipegdc/instalador-estudodebolso.git
+   cd instalador-estudodebolso
+   ```
+4. Dê permissão de execução aos scripts:
+   ```bash
+   chmod +x install.sh update.sh
+   ```
 
+## Instalação
+
+Para a primeira instalação, execute:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/luisfilipegdc/instalador-estudodebolso/main/install.sh | bash
+./install.sh
 ```
+O script irá:
+- Instalar Docker e Docker Compose.
+- Clonar o repositório principal do sistema.
+- Configurar as variáveis de ambiente.
+- Iniciar os containers.
 
-### 2. Para atualizar o sistema:
+## Atualização
 
-Basta rodar o script de update que estará na pasta `vps-setup`:
-
+Sempre que houver novidades no repositório do sistema, execute:
 ```bash
 ./update.sh
 ```
-
-
-
-
-
-git clone https://github.com/luisfilipegdc/instalador-estudodebolso.git
-cd estudodebolso-vps-setup
+O script irá:
+- Fazer o `git pull`.
+- Reconstruir as imagens Docker.
+- Reiniciar o sistema sem perda de dados (o banco está em um volume persistente).
