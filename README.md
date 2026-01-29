@@ -1,47 +1,40 @@
-# 🚀 Instalador Automático - Estudo no Bolso
+# Estudo de Bolso - VPS Setup
 
-Bem-vindo ao repositório de automação de infraestrutura do projeto **Estudo no Bolso**. Este conjunto de scripts foi desenvolvido para facilitar a instalação, atualização e manutenção da plataforma em servidores Ubuntu.
+Este repositório contém scripts automatizados para instalar e manter o sistema **Estudo de Bolso** em uma VPS Linux (Ubuntu/Debian).
 
-## 📋 Conteúdo do Repositório
+## Como usar
 
-Este pacote inclui ferramentas completas para gerenciamento do ciclo de vida da aplicação:
+1. Crie um novo repositório privado no GitHub chamado `estudodebolso-vps-setup`.
+2. Suba estes arquivos para lá.
+3. Na sua VPS, clone este repositório de setup:
+   ```bash
+   git clone https://github.com/seu-usuario/estudodebolso-vps-setup.git
+   cd estudodebolso-vps-setup
+   ```
+4. Dê permissão de execução aos scripts:
+   ```bash
+   chmod +x install.sh update.sh
+   ```
 
-| Arquivo | Descrição |
-|---------|-----------|
-| [`install.sh`](install.sh) | **Instalador Principal:** Configura todo o ambiente (LAMP), banco de dados, SSL e implanta o projeto do zero. |
-| [`update.sh`](update.sh) | **Atualizador Automático:** Realiza backup, baixa novas versões, aplica migrations e limpa caches com segurança. |
-| [`check.sh`](check.sh) | **Diagnóstico:** Verifica a saúde do servidor, status dos serviços e conexões. |
-| [`uninstall.sh`](uninstall.sh) | **Remoção:** Script utilitário para remover a instalação completamente (use com cuidado). |
-| [`INSTALL.md`](INSTALL.md) | **Documentação Técnica:** Guia detalhado de requisitos e procedimentos manuais. |
+## Instalação
 
-## 💻 Instalação Rápida
-
-Em um servidor **Ubuntu 22.04 LTS** limpo, execute:
-
+Para a primeira instalação, execute:
 ```bash
-# Baixar o instalador
-wget https://raw.githubusercontent.com/luisfilipegdc/instalador-estudodebolso/main/install.sh
-
-# Dar permissão de execução
-chmod +x install.sh
-
-# Executar como root
-sudo ./install.sh
+./install.sh
 ```
+O script irá:
+- Instalar Docker e Docker Compose.
+- Clonar o repositório principal do sistema.
+- Configurar as variáveis de ambiente.
+- Iniciar os containers.
 
-Siga as instruções interativas na tela para configurar seu domínio e banco de dados.
+## Atualização
 
-## ⚙️ Funcionalidades
-
-- **Stack Completa:** Instalação automática do PHP 8.2, MySQL 8.0 e Apache 2.4.
-- **Segurança:** Configuração automática de SSL (Let's Encrypt) e permissões de arquivo.
-- **Backups:** O script de atualização realiza backups automáticos do banco e arquivos antes de qualquer mudança.
-- **Rollback:** Em caso de falha na atualização, o sistema é revertido automaticamente para o estado anterior.
-- **Manutenção:** Página de manutenção automática durante atualizações.
-
-## 📖 Documentação
-
-Para detalhes sobre requisitos de hardware, troubleshooting e configurações avançadas, consulte o guia completo em [INSTALL.md](INSTALL.md).
-
----
-Desenvolvido para o projeto Estudo no Bolso.
+Sempre que houver novidades no repositório do sistema, execute:
+```bash
+./update.sh
+```
+O script irá:
+- Fazer o `git pull`.
+- Reconstruir as imagens Docker.
+- Reiniciar o sistema sem perda de dados (o banco está em um volume persistente).
