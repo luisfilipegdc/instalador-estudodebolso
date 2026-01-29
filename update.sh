@@ -5,7 +5,7 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Nome da pasta do projeto (ajuste se necessário)
+# Nome da pasta do projeto (ajuste se necessário )
 PROJECT_DIR="estudodebolso"
 
 echo -e "${BLUE}=== Estudo de Bolso - Atualizador ===${NC}"
@@ -23,6 +23,9 @@ fi
 cd $PROJECT_DIR
 
 echo -e "${BLUE}Puxando últimas alterações do Git...${NC}"
+GITHUB_TOKEN="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"
+# Garante que o remote use o token para não pedir senha
+git remote set-url origin "https://${GITHUB_TOKEN}@github.com/luisfilipegdc/estudodebolso.git"
 git pull
 
 echo -e "${BLUE}Reconstruindo e reiniciando containers...${NC}"

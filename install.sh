@@ -30,12 +30,14 @@ fi
 
 # 4. Configuração do Repositório do Sistema
 echo -e "${BLUE}Configurando repositório do sistema...${NC}"
-read -p "URL do repositório Git do sistema: " REPO_URL
-read -p "Nome da pasta do projeto (ex: estudodebolso): " PROJECT_DIR
+GITHUB_TOKEN="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"
+REPO_URL="https://${GITHUB_TOKEN}@github.com/luisfilipegdc/estudodebolso.git"
+PROJECT_DIR="estudodebolso"
 
 if [ -d "$PROJECT_DIR" ]; then
-    echo -e "${GREEN}Pasta já existe. Entrando...${NC}"
+    echo -e "${GREEN}Pasta já existe. Atualizando...${NC}"
     cd $PROJECT_DIR
+    git pull
 else
     git clone $REPO_URL $PROJECT_DIR
     cd $PROJECT_DIR
