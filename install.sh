@@ -9,6 +9,7 @@ echo -e "${BLUE}=== Estudo de Bolso - Instalador VPS ===${NC}"
 
 # 1. Atualizar sistema
 echo -e "${BLUE}Atualizando pacotes do sistema...${NC}"
+RED='\033[0;31m'
 sudo apt-get update && sudo apt-get upgrade -y
 
 # 2. Instalar Docker se não existir
@@ -30,18 +31,29 @@ fi
 
 # 4. Configuração do Repositório do Sistema
 echo -e "${BLUE}Configurando repositório do sistema...${NC}"
-if [ -z "$GITHUB_TOKEN" ]; then
+# Limpa token se estiver vazio ou inválido
+GITHUB_TOKEN=""
+while [[ ! $GITHUB_TOKEN =~ ^ghp_ ]]; do
     read -p "Cole seu Personal Access Token do GitHub (ghp_...): " GITHUB_TOKEN
-fi
-REPO_URL="https://${GITHUB_TOKEN}@github.com/luisfilipegdc/estudodebolso.git"
+    if [[ ! $GITHUB_TOKEN =~ ^ghp_ ]]; then
+        echo -e "${RED}Token inválido! O token deve começar com 'ghp_'.${NC}"
+    fi
+done
+
+REPO_URL="https://x-token-auth:${GITHUB_TOKEN}@github.com/luisfilipegdc/estudodebolso.git"
 PROJECT_DIR="estudodebolso"
 
 if [ -d "$PROJECT_DIR" ]; then
     echo -e "${GREEN}Pasta já existe. Atualizando...${NC}"
     cd $PROJECT_DIR
+    git remote set-url origin $REPO_URL
     git pull
 else
     git clone $REPO_URL $PROJECT_DIR
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Erro ao clonar repositório. Verifique seu token e permissões.${NC}"
+        exit 1
+    fi
     cd $PROJECT_DIR
 fi
 
