@@ -34,7 +34,7 @@ echo -e "${BLUE}Configurando repositório do sistema...${NC}"
 # Limpa token se estiver vazio
 GITHUB_TOKEN=""
 echo -n "Cole seu Personal Access Token do GitHub (ghp_...): "
-read -r GITHUB_TOKEN
+read -r GITHUB_TOKEN < /dev/tty
 
 # Limpeza básica do token
 GITHUB_TOKEN=$(echo "$GITHUB_TOKEN" | tr -d '\r\n ' | xargs)
@@ -67,8 +67,11 @@ if [ ! -f ".env" ]; then
     echo -e "${BLUE}Configurando variáveis de ambiente (.env)...${NC}"
     cp .env.example .env 2>/dev/null || touch .env
     
-    read -p "NEXTAUTH_SECRET (gere um aleatório): " NEXT_SECRET
-    read -p "OPENAI_API_KEY: " OPENAI_KEY
+    echo -n "NEXTAUTH_SECRET (gere um aleatório): "
+    read -r NEXT_SECRET < /dev/tty
+    
+    echo -n "OPENAI_API_KEY: "
+    read -r OPENAI_KEY < /dev/tty
     
     echo "DATABASE_URL=postgresql://postgres:postgres@db:5432/estudodebolso" >> .env
     echo "NEXTAUTH_SECRET=$NEXT_SECRET" >> .env
@@ -87,4 +90,4 @@ echo -e "${GREEN}Iniciando o sistema completo...${NC}"
 docker compose up -d --build
 
 echo -e "${GREEN}=== Instalação Concluída! ===${NC}"
-echo -e "Acesse seu sistema em: $NEXT_URL"
+echo -e "Acesse seu sistema em: https://estudodebolso.com.br"
