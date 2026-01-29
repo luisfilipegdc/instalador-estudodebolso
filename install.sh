@@ -45,7 +45,7 @@ if [ -z "$GITHUB_TOKEN" ]; then
 fi
 
 echo -e "${BLUE}Tentando clonar o repositório...${NC}"
-REPO_URL="https://x-token-auth:${GITHUB_TOKEN}@github.com/luisfilipegdc/estudodebolso.git"
+REPO_URL="https://${GITHUB_TOKEN}@github.com/luisfilipegdc/estudodebolso.git"
 PROJECT_DIR="estudodebolso"
 
 if [ -d "$PROJECT_DIR" ]; then

@@ -26,7 +26,8 @@ echo -e "${BLUE}Puxando últimas alterações do Git...${NC}"
 # Verifica se o remote já tem o token, se não, solicita
 CURRENT_REMOTE=$(git remote get-url origin)
 if [[ $CURRENT_REMOTE != *"ghp_"* ]]; then
-    read -p "Cole seu Personal Access Token do GitHub para atualizar: " GITHUB_TOKEN
+    echo -n "Cole seu Personal Access Token do GitHub para atualizar: "
+    read -r GITHUB_TOKEN < /dev/tty
     git remote set-url origin "https://${GITHUB_TOKEN}@github.com/luisfilipegdc/estudodebolso.git"
 fi
 git pull
